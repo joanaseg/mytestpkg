@@ -8,7 +8,7 @@ COPY . /mytestpkg
 # go into the repo directory
 RUN . /etc/environment \
 
-  && R -e "devtools::install('/mytestpkg', dep= TRUE)" \
+  && R --vanilla "devtools::install('/mytestpkg', dep= TRUE)" \
 
-  && R -e "rmarkdown::render('/mytestpkg/vignettes/challenge.Rmd')"
+  && R --vanilla "rmarkdown::render('/mytestpkg/vignettes/challenge.Rmd')"
 
