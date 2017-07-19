@@ -1,0 +1,56 @@
+---
+title: "challenge"
+output: bookdown::html_document2
+author: "Joana Seguin"
+date: '`r Sys.Date()`'
+bibliography: my_references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## First function
+
+Here is my new function:
+
+```{r three}
+library(mytestpkg)
+followers(3)
+```
+
+More Information can be found (need to look this up).
+
+```{r five}
+library(mytestpkg)
+followers(5)
+
+```
+
+##Wednesday
+
+On Wednesday we started with a challenge to get familiar with work with all this. You can see the result in Figure \@ref(fig:cars) and Table \@ref(tab:tableone) 
+Here is my table to practise using markdown files. 
+
+```{r cars, fig.cap= "This plot demonstrates speed and distance of cars of a given dataset", echo=FALSE}
+plot(cars, col="blue")
+```
+
+In Figure \@ref(fig:cars) you can clearly see that i managed to produce a plot. You can find interesting literature by an author called Cars here: [@madanipour2000social].
+If you don't like figures, here is a table with numbers:
+
+```{r tableone, echo=FALSE}
+knitr::kable(tail(cars), caption = "My table with random cars")
+```
+
+I also created a new function. 
+```{r half}
+library(mytestpkg)
+m <- half(2)
+n <- half(5)
+o <- half(10)
+print(c(m, n, o))
+```
+
+Useful for output description:
+paste("the value is", x)
+glue::glue("the value is", y)

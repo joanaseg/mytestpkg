@@ -1,0 +1,12 @@
+Package: mytestpkg
+Type: Package
+Title: Demonstrates some concepts
+Version: 0.1.0
+Author: Joana Seguin (you can make sure who is contributing, writing, holding copyright etc.)
+Maintainer: Joana Seguin <jseguin@ecology.uni-kiel.de>
+Description: This research compendium contains code and data for the publication in <http://sciencedirect.com>
+  The version that matched the published results is archived at <doi:xxx>
+License: MIT + file LICENSE
+LazyData: TRUE
+Suggests: testthat
+RoxygenNote: 6.0.1
