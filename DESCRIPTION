@@ -8,5 +8,5 @@ Description: This research compendium contains code and data for the publication
   The version that matched the published results is archived at <doi:xxx>
 License: MIT + file LICENSE
 LazyData: TRUE
-Suggests: testthats
+Suggests: testthat
 RoxygenNote: 6.0.1
