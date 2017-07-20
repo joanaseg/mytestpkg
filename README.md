@@ -1,36 +1,27 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-```
-
-# mytestpkg
+mytestpkg
+=========
 
 [![Travis-CI Build Status](https://travis-ci.org/joanaseg/mytestpkg.svg?branch=master)](https://travis-ci.org/joanaseg/mytestpkg)
 
 The goal of mytestpkg is to ...
 
-## Installation
+Installation
+------------
 
 You can install mytestpkg from github with:
 
-```{r gh-installation, eval = FALSE}
+``` r
 # install.packages("devtools")
 devtools::install_github("joanaseg/mytestpkg")
 ```
 
-## Example
+Example
+-------
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+``` r
 ## basic example code
 ```
