@@ -6,8 +6,7 @@
 #' @export
 #'
 #' @examples followers(3)
-#' @import library
-#' @importFrom dplyr dyplyr
+
 
 followers <- function(x) {
 y <- c(x, x+1, x+2)
