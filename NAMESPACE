@@ -2,5 +2,3 @@
 
 export(followers)
 export(half)
-import(library)
-importFrom(dplyr,dyplyr)
