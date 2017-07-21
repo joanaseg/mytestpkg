@@ -3,9 +3,9 @@
 mytestpkg
 =========
 
-[![Travis-CI Build Status](https://travis-ci.org/joanaseg/mytestpkg.svg?branch=master)](https://travis-ci.org/joanaseg/mytestpkg)
+[![Travis-CI Build Status](https://travis-ci.org/joanaseg/mytestpkg.svg?branch=master)](https://travis-ci.org/joanaseg/mytestpkg) [![Circle CI](https://circleci.com/gh/joanaseg/mytestpkg.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/joanaseg/mytestpkg)
 
-The goal of mytestpkg is to ...
+The goal of mytestpkg is to get a nice badge.
 
 Installation
 ------------
