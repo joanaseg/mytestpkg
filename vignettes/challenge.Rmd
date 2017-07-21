@@ -68,6 +68,7 @@ knitr::kable(head(LRB))
 <!-- alternative: using package checkpoint: loads a shnapshot of the daily versions and stores it every day.
 -->
 
+##Friday
 # Point pattern analyses - Spatial analysis
 
 <!-- 
@@ -91,7 +92,7 @@ Kriging with external drift
 # Point Patterns
 
 ```{r}
-harran <- read.table("data/Sites_HarranPlain.csv", header = TRUE, sep = ",")
+harran <- read.table("../data/Sites_HarranPlain.csv", header = TRUE, sep = ",")
 str(harran)
 
 ```
@@ -197,3 +198,28 @@ points(harran_rpoispp4, col="green")
  - docker (line 11-15)
  - README.Rmd 
  (copied from Daniels repo)
+
+## Friday afternoon
+# Second Order effects
+```{r}
+# g-Function compares NN-distance
+harran_g <- Gest(harran_sing)
+str(harran_g)
+# r is distance radius, km is empirial data
+plot(harran_g)
+# blue line is poisson function, black line is real data, blue and green are data with edge correction
+# at low distance we have more points than in theory so seems to be clustering, around 1000 m it seems random,
+# in upper distance seems clustering again
+harran_ge <- envelope(harran_sing, fun = "Gest")
+# takes random points 99 times to calculate g-function
+plot(harran_ge)
+# shows that distribution of points in harran plain is completely random
+harran_ge_large <- envelope(harran_sing, fun = "Gest", nsim = 999)
+plot(harran_ge_large)
+# the more values you use, the wider the gray area gets
+
+harran_f <- Fest(harran_sing)
+plot(harran_f)
+harran_k <- Kest(harran_sing)
+```
+
