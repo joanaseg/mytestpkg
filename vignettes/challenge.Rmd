@@ -65,3 +65,135 @@ data(LRB)
 knitr::kable(head(LRB))
 ```
 
+<!-- alternative: using package checkpoint: loads a shnapshot of the daily versions and stores it every day.
+-->
+
+# Point pattern analyses - Spatial analysis
+
+<!-- 
+Nakoinz & Knitter 2016
+prequisite: you need x,y location and a defined location/area
+helps to distinguish first from second order effects
+first order property: location depends on spatial parameter
+second order property: location depends on relationship to other points
+
+-->
+
+# Interpolation methods
+<!-- 
+Inverse distance weighing interpolation (based on inverse distance power)
+Ordinary Kriging:
+preassumption: intrinsic hypothesis (points are representative for the area)
+Kriging with external drift
+-->
+
+
+# Point Patterns
+
+```{r}
+harran <- read.table("data/Sites_HarranPlain.csv", header = TRUE, sep = ",")
+str(harran)
+
+```
+
+# Spatstat
+
+```{r}
+library(spatstat)
+library(sp)
+coordinates(harran) <- ~X+Y
+proj4string(harran) <- CRS("+init=epsg:4326") #overrides projection information - be careful!!
+harran <- spTransform(harran, CRSobj = CRS("+init=epsg:32637")) #326 stands for utm and 37 for 37N
+str(harran)
+
+harran_ppp <- ppp(x = harran@coords[,1], 
+                  y = harran@coords[,2], 
+                  window = owin(xrange = harran@bbox[1,], 
+                                yrange = harran@bbox[2,]))
+str(harran_ppp)
+plot(harran_ppp)
+
+harran_ppp <- ppp(x = harran@coords[,1], 
+                  y = harran@coords[,2], 
+                  window = owin(xrange = harran@bbox[1,], 
+                                yrange = c(min(harran@coords[,2]), min(harran@coords[,2]+52000))))
+# you get the warning that you throw out some points that will no longer be included in the analysis
+# and some are duplicates (find out with duplicated.ppp and remove with unique.ppp)
+# alternative: add "check = FALSE" to delete duplicates and points outside the area
+
+anyDuplicated(harran_ppp)
+harran_sing <- unique(harran_ppp)
+# alternative: harran_unique <- harran[!is.TRUE(duplicated(harran_ppp))] #! means give me the opposite
+# you could use this without "is.True" because it is a true/false answer
+```
+Spatstat has very nice descriptions, manual etc. 
+It's the way to go if you want to work with spatial statistics and it's enough to have data in a table.
+
+```{r}
+# Nearest neighbour
+harran_sing_nn <- nndist(harran_sing)
+str(harran_sing_nn) # distance is shown in m because we transformed the proj.
+barplot(sort(harran_sing_nn))
+hist(harran_sing_nn)
+
+#create kernel density estimation
+harran_dens <- density.ppp(harran_sing, sigma = mean(harran_sing_nn))
+harran_dens_standard <- density(harran_sing, bw = mean(harran_sing_nn))
+plot(harran_dens)
+plot(harran_dens_standard)
+# bw.ppl(harran_sing) or bw.diggle(harran_sing) to check which bw you should set
+plot(bw.ppl(harran_sing), xlim = c(2000, 5000)) #you see the max value
+
+#enter elevation as covariate
+
+library(raster)
+dem <- raster("./data/dem.tif") #rasterframe
+
+#older alternative:
+library(rgdal)
+dem2 <- readGDAL("./data/dem.tif") #spatialgriddataframe
+hist(dem@data$band1)
+
+im_dem <- as.im(as.image.SpatialGridDataFrame(as(dem, "SpatialGridDataFrame")))
+# you need to transform because old spatstats can only work with this image format
+
+harran_rhohat <- rhohat(object = harran_sing, covariate = im_dem, bw = 200)
+
+plot(harran_rhohat)
+# x-axis: elevation of our points, y-axis: intensity of points - the lower the elevation the higher
+# the point density but the larger the sigma the less evident this relationship
+# contrary to point correlation you have continuous datasets here because they are interpolated in the area
+
+# compare theoretical rhohat function with original data
+rho_dem <-predict(harran_rhohat)
+plot(rho_dem)
+diff_rho <- harran_dens - rho_dem
+plot(diff_rho)
+# first order effect map
+```
+
+challenge: produce random points that have the same density like the global density of our area 
+(density = points per area)
+```{r}
+#poisson process pattern - spatial randomness
+
+set.seed(123)
+harran_rpoispp2 <- rpoispp(lambda = harran_sing$n/area.owin(harran_sing$window), win = harran_sing$window)
+set.seed(123)
+harran_rpoispp3 <- rpoispp(intensity(harran_sing), win = Window(harran_sing))
+set.seed(123)
+harran_rpoispp4 <- rpoispp(ex = harran_sing)
+
+plot(harran_sing)
+points(harran_rpoispp2, col="red")
+points(harran_rpoispp3, col="blue")
+points(harran_rpoispp4, col="green")
+
+#set.seed use random start number and restore data points for future use
+```
+ To put it on github you need to change 4 files:
+ - description (insert all imports), 
+ - travis.yml (addons - apt - packages, script)
+ - docker (line 11-15)
+ - README.Rmd 
+ (copied from Daniels repo)

@@ -8,7 +8,8 @@ COPY . /mytestpkg
 # go into the repo directory
 RUN . /etc/environment \
 
-  && R --vanilla "devtools::install('/mytestpkg', dep= TRUE)" \
-
+  && R --vanilla "options(repos='https://mran.microsoft.com/snapshot/2017-07-20'); devtools::install('/mytestpkg', dep= TRUE)" \
   && R --vanilla "rmarkdown::render('/mytestpkg/vignettes/challenge.Rmd')"
 
+ && apt-get update -y \
+ && apt-get install -y libudunits2-dev libgdal-dev libgsl0-dev gdal-bin libgeos-dev libpng-dev libproj-dev \
