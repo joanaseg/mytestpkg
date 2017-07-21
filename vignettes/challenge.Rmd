@@ -148,11 +148,11 @@ plot(bw.ppl(harran_sing), xlim = c(2000, 5000)) #you see the max value
 #enter elevation as covariate
 
 library(raster)
-dem <- raster("./data/dem.tif") #rasterframe
+dem <- raster("../data/dem.tif") #rasterframe
 
 #older alternative:
 library(rgdal)
-dem2 <- readGDAL("./data/dem.tif") #spatialgriddataframe
+dem2 <- readGDAL("../data/dem.tif") #spatialgriddataframe
 hist(dem@data$band1)
 
 im_dem <- as.im(as.image.SpatialGridDataFrame(as(dem, "SpatialGridDataFrame")))
@@ -221,5 +221,8 @@ plot(harran_ge_large)
 harran_f <- Fest(harran_sing)
 plot(harran_f)
 harran_k <- Kest(harran_sing)
+plot(harran_k)
+# inhomogeneous data with covariate influence can be tested against Ginhom, Finhom, Kinhom
+# e.g. if you know you have a first order effect, you predict the density image
 ```
 
