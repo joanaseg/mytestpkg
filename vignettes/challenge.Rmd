@@ -153,7 +153,7 @@ dem <- raster("../data/dem.tif") #rasterframe
 #older alternative:
 library(rgdal)
 dem2 <- readGDAL("../data/dem.tif") #spatialgriddataframe
-hist(dem@data$band1)
+hist(dem2$band1)
 
 im_dem <- as.im(as.image.SpatialGridDataFrame(as(dem, "SpatialGridDataFrame")))
 # you need to transform because old spatstats can only work with this image format
@@ -224,5 +224,8 @@ harran_k <- Kest(harran_sing)
 plot(harran_k)
 # inhomogeneous data with covariate influence can be tested against Ginhom, Finhom, Kinhom
 # e.g. if you know you have a first order effect, you predict the density image
+
+harran_gi <- Ginhom(harran_sing, lambda = predict(harran_rhohat))
+plot(harran_gi)
 ```
 
