@@ -18,4 +18,4 @@ addons:
       - libproj-dev
 script:
   - Rscript -e "devtools::install()"
-- Rscript -e "rmarkdown::render('analysis/Test_2.Rmd')"
+  - Rscript -e "rmarkdown::render('analysis/Test_2.Rmd')"
